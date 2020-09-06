@@ -11,6 +11,7 @@ namespace DataAccess.Repositories
     public class Employee : MasterRepository, IEmployeeRepository
     {
         private string TSAll;
+        private string TSInsert;
         public IEnumerable<Entities.Employee> All()
         {
             throw new NotImplementedException();
