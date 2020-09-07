@@ -20,35 +20,55 @@ namespace DataAccess.Repositories
         public EmployeeRepository()
         {
             TSAll = "SELECT * FROM Employee";
-            TSInsert = "INSERT INTO Employee VALUES (@number, @name, @mail, @birthay)";
-            TSUpdate = "UPDATE Employee SET idNumber = @number, Name = @name, Mail = @mail, Birthay = @birthay WHERE idPK = @id";
+            TSInsert = "INSERT INTO Employee VALUES (@number, @name, @mail, @birthday)";
+            TSUpdate = "UPDATE Employee SET idNumber = @number, Name = @name, Mail = @mail, Birthday = @birthday WHERE idPK = @id";
             TSDestroy = "DELETE FROM Employee WHERE idPK = @id";
         }
 
         //Métodos o COmportamiento del Objeto
         public IEnumerable<Entities.Employee> All()
         {
-            
+            var TableResult = ExecuteReader(TSAll);
+            var ListEmployee = new List<Employee>();
+            foreach(DataRow Row in TableResult.Rows)
+            {
+                ListEmployee.Add(new Employee {
+                    ID = Convert.ToInt32(Row[0]),
+                    Number = Row[1].ToString(),
+                    Name = Row[2].ToString(),
+                    Email = Row[3].ToString(),
+                    Birthday = Convert.ToDateTime(Row[4])
+                });
+            }
+            return ListEmployee;
         }
 
         public int Insert(Entities.Employee entity)
         {
             Parameters = new List<SqlParameter>();
-            Parameters.Add("@id", entity.ID);
-            Parameters.Add("@number", entity.Number);
-            Parameters.Add("@name", entity.Name);
-            Parameters.Add("@mail", entity.Email);
-            Parameters.Add("@birthay", entity.Birthday);
+            Parameters.Add(new SqlParameter("@number", entity.Number));
+            Parameters.Add(new SqlParameter("@name", entity.Name));
+            Parameters.Add(new SqlParameter("@mail", entity.Email));
+            Parameters.Add(new SqlParameter("@birthday", entity.Birthday));
+            return ExecuteNonQuery(TSInsert);
         }
 
         public int Update(Entities.Employee entity)
         {
-            throw new NotImplementedException();
+            Parameters = new List<SqlParameter>();
+            Parameters.Add(new SqlParameter("@id", entity.ID));
+            Parameters.Add(new SqlParameter("@number", entity.Number));
+            Parameters.Add(new SqlParameter("@name", entity.Name));
+            Parameters.Add(new SqlParameter("@mail", entity.Email));
+            Parameters.Add(new SqlParameter("@birthday", entity.Birthday));
+            return ExecuteNonQuery(TSUpdate);
         }
 
         public int Destroy(int id)
         {
-            throw new NotImplementedException();
+            Parameters = new List<SqlParameter>();
+            Parameters.Add(new SqlParameter("@id", id));
+            return ExecuteNonQuery(TSDestroy);
         }
     }
 }

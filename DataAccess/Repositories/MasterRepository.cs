@@ -16,6 +16,7 @@ namespace DataAccess.Repositories
         {
             using(var Connection = GetConnection())
             {
+                Connection.Open();
                 using (SqlCommand Command = new SqlCommand())
                 {
                     Command.Connection = Connection;
@@ -36,6 +37,7 @@ namespace DataAccess.Repositories
         {
             using (var Connection = GetConnection())
             {
+                Connection.Open();
                 using (SqlCommand Command = new SqlCommand())
                 {
                     Command.Connection = Connection;
