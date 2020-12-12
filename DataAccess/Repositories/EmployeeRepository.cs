@@ -1,74 +1,112 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccess.Contracts;
-using DataAccess.Entities;
+using Common.Entities;
 using System.Data;
 using System.Data.SqlClient;
+using Common.Cache.Session;
 
 namespace DataAccess.Repositories
 {
     public class EmployeeRepository : MasterRepository, IEmployeeRepository
     {
         //Campos
-        private string TSAll, TSInsert, TSUpdate, TSDestroy;
+        private string TSAll, TSInsert, TSUpdate, TSDestroy,TSLogin;
         //Prpiedades
 
         //Constructores
         public EmployeeRepository()
         {
-            TSAll = "SELECT * FROM Employee";
-            TSInsert = "INSERT INTO Employee VALUES (@number, @name, @mail, @birthday)";
-            TSUpdate = "UPDATE Employee SET idNumber = @number, Name = @name, Mail = @mail, Birthday = @birthday WHERE idPK = @id";
-            TSDestroy = "DELETE FROM Employee WHERE idPK = @id";
+            TSAll = "sfe_employee_all";
+            TSInsert = "sfe_employee_insert";
+            TSUpdate = "sfe_employee_update";
+            TSDestroy = "sfe_employee_delete";
+            TSLogin = "sfe_login";
         }
 
         //Métodos o COmportamiento del Objeto
-        public IEnumerable<Entities.Employee> All()
+        public IEnumerable<Employee> All()
         {
             var TableResult = ExecuteReader(TSAll);
             var ListEmployee = new List<Employee>();
             foreach(DataRow Row in TableResult.Rows)
             {
                 ListEmployee.Add(new Employee {
-                    ID = Convert.ToInt32(Row[0]),
-                    Number = Row[1].ToString(),
-                    Name = Row[2].ToString(),
-                    Email = Row[3].ToString(),
-                    Birthday = Convert.ToDateTime(Row[4])
+                    Username = Convert.ToString(Row["username"]),
+                    Dni = Convert.ToString(Row["dni"]),
+                    FirstName = Convert.ToString(Row["first_name"]),
+                    LastName = Convert.ToString(Row["last_name"]),
+                    Email = Convert.ToString(Row["email"]),
+                    Birthday = Convert.ToDateTime(Row["birthday"]),
+                    State = Convert.ToString(Row["state"]),
+                    PositionCode = Convert.ToString(Row["position_code"]),
+                    Position = Convert.ToString(Row["position"])
                 });
             }
             return ListEmployee;
         }
 
-        public int Insert(Entities.Employee entity)
+        public int Insert(Employee employee)
         {
             Parameters = new List<SqlParameter>();
-            Parameters.Add(new SqlParameter("@number", entity.Number));
-            Parameters.Add(new SqlParameter("@name", entity.Name));
-            Parameters.Add(new SqlParameter("@mail", entity.Email));
-            Parameters.Add(new SqlParameter("@birthday", entity.Birthday));
+            Parameters.Add(new SqlParameter("@username", employee.Username));
+            Parameters.Add(new SqlParameter("@dni", employee.Dni));
+            Parameters.Add(new SqlParameter("@first_name", employee.FirstName));
+            Parameters.Add(new SqlParameter("@last_name", employee.LastName));
+            Parameters.Add(new SqlParameter("@mail", employee.Email));
+            Parameters.Add(new SqlParameter("@birthday", employee.Birthday));
+            Parameters.Add(new SqlParameter("@state", employee.State));
+            Parameters.Add(new SqlParameter("@position_code", employee.PositionCode));
             return ExecuteNonQuery(TSInsert);
         }
 
-        public int Update(Entities.Employee entity)
+        public int Update(Employee employee)
         {
             Parameters = new List<SqlParameter>();
-            Parameters.Add(new SqlParameter("@id", entity.ID));
-            Parameters.Add(new SqlParameter("@number", entity.Number));
-            Parameters.Add(new SqlParameter("@name", entity.Name));
-            Parameters.Add(new SqlParameter("@mail", entity.Email));
-            Parameters.Add(new SqlParameter("@birthday", entity.Birthday));
+            Parameters.Add(new SqlParameter("@username", employee.Username));
+            Parameters.Add(new SqlParameter("@dni", employee.Dni));
+            Parameters.Add(new SqlParameter("@first_name", employee.FirstName));
+            Parameters.Add(new SqlParameter("@last_name", employee.LastName));
+            Parameters.Add(new SqlParameter("@mail", employee.Email));
+            Parameters.Add(new SqlParameter("@birthday", employee.Birthday));
+            Parameters.Add(new SqlParameter("@state", employee.State));
             return ExecuteNonQuery(TSUpdate);
         }
 
         public int Destroy(int id)
         {
+            throw new NotFiniteNumberException();
+        }
+
+        public int Destroy(string code)
+        {
             Parameters = new List<SqlParameter>();
-            Parameters.Add(new SqlParameter("@id", id));
+            Parameters.Add(new SqlParameter("@code", code));
             return ExecuteNonQuery(TSDestroy);
+        }
+
+        public bool Login(string username, string password)
+        {
+            Parameters = new List<SqlParameter>();
+            Parameters.Add(new SqlParameter("@username", username));
+            Parameters.Add(new SqlParameter("@password", password));
+            var Data = ExecuteParamReader(TSLogin);
+            if (Data.Rows.Count > 0)
+            {
+                Employee employee = new Employee() {
+                    Username = Convert.ToString(Data.Columns["username"]),
+                    Dni = Convert.ToString(Data.Columns["dni"]),
+                    FirstName = Convert.ToString(Data.Columns["first_name"]),
+                    LastName = Convert.ToString(Data.Columns["last_name"]),
+                    Email = Convert.ToString(Data.Columns["email"]),
+                    Birthday = Convert.ToDateTime(Data.Columns["birthday"]),
+                    State = Convert.ToString(Data.Columns["state"]),
+                    PositionCode = Convert.ToString(Data.Columns["position_code"]),
+                    Position = Convert.ToString(Data.Columns["position"]),
+            };
+                return true;
+            }
+            return false;
         }
     }
 }

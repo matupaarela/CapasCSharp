@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.SqlClient;
 
 namespace DataAccess.Repositories
@@ -13,7 +8,7 @@ namespace DataAccess.Repositories
         private readonly string ConnectionString;
         public Repository()
         {
-            ConnectionString = ConfigurationManager.ConnectionStrings["Presentation.Properties.Settings.ConnectionMyCompany"].ToString();
+            ConnectionString = ConfigurationManager.ConnectionStrings["Presentation.Properties.Settings.ConnectionSISCONT"].ToString();
         }
 
         protected SqlConnection GetConnection()

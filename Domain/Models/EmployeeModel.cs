@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccess.Contracts;
-using DataAccess.Entities;
+using Common.Entities;
 using DataAccess.Repositories;
 using Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
@@ -105,6 +103,20 @@ namespace Domain.Models
             return listEmployees;
         }
 
+        public bool Login(string username, string password)
+        {
+            //UserCache.Username = Convert.ToString(Data.Columns["username"]);
+            //UserCache.Dni = Convert.ToString(Data.Columns["dni"]);
+            //UserCache.FirstName = Convert.ToString(Data.Columns["first_name"]);
+            //UserCache.LastName = Convert.ToString(Data.Columns["last_name"]);
+            //UserCache.Email = Convert.ToString(Data.Columns["email"]);
+            //UserCache.Birthday = Convert.ToDateTime(Data.Columns["birthday"]);
+            //UserCache.State = Convert.ToString(Data.Columns["state"]);
+            //UserCache.PositionCode = Convert.ToString(Data.Columns["position_code"]);
+            //UserCache.Position = Convert.ToString(Data.Columns["position"]);
+            return true;
+        }
+
         //public IEnumerable<EmployeeModel> FindByNumber(string Filter)
         //{
         //    return All().FindAll(e => e.Number == Filter);
@@ -112,7 +124,7 @@ namespace Domain.Models
 
         public IEnumerable<EmployeeModel> Filter(string Filter)
         {
-            return listEmployees.FindAll(e => e.Number.Contains(Filter) || e.Name.Contains(Filter));
+            return listEmployees.FindAll(e => e.Name.ToUpper().Contains(Filter.ToUpper()));
         }
 
         private int CalculateAge(DateTime Date)

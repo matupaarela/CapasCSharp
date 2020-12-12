@@ -10,6 +10,7 @@ namespace DataAccess.Contracts
     {
         int Insert(Entity entity);
         int Update(Entity entity);
+        int Destroy(string code);
         int Destroy(int id);
         IEnumerable<Entity> All();
     }

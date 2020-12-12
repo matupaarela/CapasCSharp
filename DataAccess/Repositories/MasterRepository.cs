@@ -53,5 +53,31 @@ namespace DataAccess.Repositories
                 }
             }
         }
+
+        protected DataTable ExecuteParamReader(string TransacSQL)
+        {
+            using (var Connection = GetConnection())
+            {
+                Connection.Open();
+                using (SqlCommand Command = new SqlCommand())
+                {
+                    Command.Connection = Connection;
+                    Command.CommandText = TransacSQL;
+                    Command.CommandType = CommandType.StoredProcedure;
+                    foreach (SqlParameter Param in Parameters)
+                    {
+                        Command.Parameters.Add(Param);
+                    }
+                    SqlDataReader Reader = Command.ExecuteReader();
+                    using (var Data = new DataTable())
+                    {
+                        Data.Load(Reader);
+                        Reader.Dispose();
+                        Parameters.Clear();
+                        return Data;
+                    }
+                }
+            }
+        }
     }
 }
