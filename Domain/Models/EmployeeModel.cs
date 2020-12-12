@@ -7,40 +7,46 @@ using DataAccess.Repositories;
 using Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using Common.Cache.Session;
 
 namespace Domain.Models
 {
     public class EmployeeModel
     {
-        private int ID;
-        private string Number;
-        private string Name;
-        private string Email;
-        private DateTime Birthday;
-        private int Age;
+        private string UsernameModel;
+        private string DniModel;
+        private string FirstNameModel;
+        private string LastNameModel;
+        private string EmailModel;
+        private DateTime BirthdayModel;
+        private string StateModel;
+        private string PositionCodeModel;
+        private string PositionModel;
+        private int AgeModel;
 
         private IEmployeeRepository employeeRepository;
-        public EntityState State { private get; set; }
+        public EntityState EState { private get; set; }
         private List<EmployeeModel> listEmployees;
 
         //PROPIEDADES/MODELO DE VISTA/ VALIDACIONES
-        public int id { get => ID; set => ID = value; }
-
-        [Required]
-        [RegularExpression("([0-9]+)")]
-        [StringLength(maximumLength:8, MinimumLength = 8)]
-        public string number { get => Number; set => Number = value; }
-
         [Required]
         [RegularExpression("^([a-zA-Z ]+$)")]
         [StringLength(maximumLength: 255, MinimumLength = 3)]
-        public string name { get => Name; set => Name = value; }
-
+        public string Username { get => UsernameModel; set => UsernameModel = value; }
+        [Required]
+        [RegularExpression("([0-9]+)")]
+        [StringLength(maximumLength:8, MinimumLength = 8)]
+        public string Dni { get => DniModel; set => DniModel = value; }
+        public string FirstName { get => FirstNameModel; set => FirstNameModel = value; }
+        public string LastName { get => LastNameModel; set => LastNameModel = value; }
         [EmailAddress]
-        public string email { get => Email; set => Email = value; }
-
-        public DateTime birthday { get => Birthday; set => Birthday = value; }
-        public int age { get => Age; private set => Age = value; }
+        public string Email { get => EmailModel; set => EmailModel = value; }
+        [DataType(DataType.Date)]
+        public DateTime Birthday { get => BirthdayModel; set => BirthdayModel = value; }
+        public string State { get => StateModel; set => StateModel = value; }
+        public string PositionCode { get => PositionCodeModel; set => PositionCodeModel = value; }
+        public string Position { get => PositionModel; set => PositionModel = value; }
+        public int Age { get => AgeModel; set => AgeModel = value; }
 
         public EmployeeModel()
         {
@@ -53,13 +59,16 @@ namespace Domain.Models
             try
             {
                 var employee = new Employee();
-                employee.ID = ID;
-                employee.Number = Number;
-                employee.Name = Name;
+                employee.Username = Username;
+                employee.Dni = Dni;
+                employee.FirstName = FirstName;
+                employee.LastName = LastName;
                 employee.Email = Email;
                 employee.Birthday = Birthday;
+                employee.State = State;
+                employee.PositionCode = PositionCode;
 
-                switch (State)
+                switch (EState)
                 {
                     case EntityState.Added:
                         //Ejecutar reglas comerciales / calculos
@@ -71,7 +80,7 @@ namespace Domain.Models
                         Msg = "Modificado Correctamente";
                         break;
                     case EntityState.Deleted:
-                        employeeRepository.Destroy(ID);
+                        employeeRepository.Destroy(Username);
                         Msg = "Eliminado Correctamente";
                         break;
                 }
@@ -92,11 +101,15 @@ namespace Domain.Models
             foreach(Employee employee in employeeDataModel)
             {
                 listEmployees.Add(new EmployeeModel {
-                    ID = employee.ID,
-                    Number = employee.Number,
-                    Name = employee.Name,
+                    Username = employee.Username,
+                    Dni = employee.Dni,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
                     Email = employee.Email,
                     Birthday = employee.Birthday,
+                    State = employee.State,
+                    PositionCode = employee.PositionCode,
+                    Position = employee.Position,
                     Age = CalculateAge(employee.Birthday)
                 });
             }
@@ -105,16 +118,7 @@ namespace Domain.Models
 
         public bool Login(string username, string password)
         {
-            //UserCache.Username = Convert.ToString(Data.Columns["username"]);
-            //UserCache.Dni = Convert.ToString(Data.Columns["dni"]);
-            //UserCache.FirstName = Convert.ToString(Data.Columns["first_name"]);
-            //UserCache.LastName = Convert.ToString(Data.Columns["last_name"]);
-            //UserCache.Email = Convert.ToString(Data.Columns["email"]);
-            //UserCache.Birthday = Convert.ToDateTime(Data.Columns["birthday"]);
-            //UserCache.State = Convert.ToString(Data.Columns["state"]);
-            //UserCache.PositionCode = Convert.ToString(Data.Columns["position_code"]);
-            //UserCache.Position = Convert.ToString(Data.Columns["position"]);
-            return true;
+            return employeeRepository.Login(username, password);
         }
 
         //public IEnumerable<EmployeeModel> FindByNumber(string Filter)
@@ -124,7 +128,7 @@ namespace Domain.Models
 
         public IEnumerable<EmployeeModel> Filter(string Filter)
         {
-            return listEmployees.FindAll(e => e.Name.ToUpper().Contains(Filter.ToUpper()));
+            return listEmployees.FindAll(e => e.FirstName.ToUpper().Contains(Filter.ToUpper()) | e.LastName.ToUpper().Contains(Filter.ToUpper()));
         }
 
         private int CalculateAge(DateTime Date)

@@ -93,17 +93,15 @@ namespace DataAccess.Repositories
             var Data = ExecuteParamReader(TSLogin);
             if (Data.Rows.Count > 0)
             {
-                Employee employee = new Employee() {
-                    Username = Convert.ToString(Data.Columns["username"]),
-                    Dni = Convert.ToString(Data.Columns["dni"]),
-                    FirstName = Convert.ToString(Data.Columns["first_name"]),
-                    LastName = Convert.ToString(Data.Columns["last_name"]),
-                    Email = Convert.ToString(Data.Columns["email"]),
-                    Birthday = Convert.ToDateTime(Data.Columns["birthday"]),
-                    State = Convert.ToString(Data.Columns["state"]),
-                    PositionCode = Convert.ToString(Data.Columns["position_code"]),
-                    Position = Convert.ToString(Data.Columns["position"]),
-            };
+                UserCache.Username = Convert.ToString(Data.Rows[0]["username"]);
+                UserCache.Dni = Convert.ToString(Data.Rows[0]["dni"]);
+                UserCache.FirstName = Convert.ToString(Data.Rows[0]["first_name"]);
+                UserCache.LastName = Convert.ToString(Data.Rows[0]["last_name"]);
+                UserCache.Email = Convert.ToString(Data.Rows[0]["email"]);
+                UserCache.Birthday = Convert.ToDateTime(Data.Rows[0]["birthday"]);
+                UserCache.State = Convert.ToString(Data.Rows[0]["state"]);
+                UserCache.PositionCode = Convert.ToString(Data.Rows[0]["position_code"]);
+                UserCache.Position = Convert.ToString(Data.Rows[0]["position"]);
                 return true;
             }
             return false;

@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,8 +45,17 @@
   <ItemGroup>
     <Compile Include="Cache\Session\Positions.cs" />
     <Compile Include="Cache\Session\UserCache.cs" />
+    <Compile Include="Consts\App.cs" />
+    <Compile Include="Consts\Error.cs" />
+    <Compile Include="Consts\Module.cs" />
+    <Compile Include="Consts\Pallete.cs" />
+    <Compile Include="Consts\Success.cs" />
+    <Compile Include="Consts\Validate.cs" />
+    <Compile Include="Entities\Position.cs" />
     <Compile Include="Entities\Employee.cs" />
+    <Compile Include="Helpers\Box.cs" />
     <Compile Include="Helpers\Helpers.cs" />
+    <Compile Include="Helpers\PBLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

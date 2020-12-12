@@ -30,17 +30,17 @@ namespace Presentation.Forms
         private void InitializeComponent()
         {
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.TBPassword = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.TBUsername = new System.Windows.Forms.TextBox();
-            this.LblErrorMesssage = new System.Windows.Forms.Label();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.LblErrorMesssage = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -56,6 +56,16 @@ namespace Presentation.Forms
             this.panel2.Size = new System.Drawing.Size(172, 26);
             this.panel2.TabIndex = 22;
             // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImage = global::Presentation.Properties.Resources.key;
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox4.Location = new System.Drawing.Point(2, 4);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox4.TabIndex = 13;
+            this.pictureBox4.TabStop = false;
+            // 
             // TBPassword
             // 
             this.TBPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -65,6 +75,7 @@ namespace Presentation.Forms
             this.TBPassword.Size = new System.Drawing.Size(140, 17);
             this.TBPassword.TabIndex = 2;
             this.TBPassword.UseSystemPasswordChar = true;
+            this.TBPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TBPassword_KeyDown);
             // 
             // panel1
             // 
@@ -86,28 +97,7 @@ namespace Presentation.Forms
             this.TBUsername.Name = "TBUsername";
             this.TBUsername.Size = new System.Drawing.Size(140, 17);
             this.TBUsername.TabIndex = 1;
-            // 
-            // LblErrorMesssage
-            // 
-            this.LblErrorMesssage.AutoSize = true;
-            this.LblErrorMesssage.ForeColor = System.Drawing.Color.Red;
-            this.LblErrorMesssage.Location = new System.Drawing.Point(65, 237);
-            this.LblErrorMesssage.Name = "LblErrorMesssage";
-            this.LblErrorMesssage.Size = new System.Drawing.Size(72, 13);
-            this.LblErrorMesssage.TabIndex = 19;
-            this.LblErrorMesssage.Text = "ErrorMessage";
-            this.LblErrorMesssage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LblErrorMesssage.Visible = false;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.BackgroundImage = global::Presentation.Properties.Resources.key;
-            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox4.Location = new System.Drawing.Point(2, 4);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox4.TabIndex = 13;
-            this.pictureBox4.TabStop = false;
+            this.TBUsername.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TBUsername_KeyDown);
             // 
             // pictureBox2
             // 
@@ -118,6 +108,18 @@ namespace Presentation.Forms
             this.pictureBox2.Size = new System.Drawing.Size(16, 16);
             this.pictureBox2.TabIndex = 13;
             this.pictureBox2.TabStop = false;
+            // 
+            // LblErrorMesssage
+            // 
+            this.LblErrorMesssage.AutoSize = true;
+            this.LblErrorMesssage.ForeColor = System.Drawing.Color.Red;
+            this.LblErrorMesssage.Location = new System.Drawing.Point(39, 232);
+            this.LblErrorMesssage.Name = "LblErrorMesssage";
+            this.LblErrorMesssage.Size = new System.Drawing.Size(72, 13);
+            this.LblErrorMesssage.TabIndex = 19;
+            this.LblErrorMesssage.Text = "ErrorMessage";
+            this.LblErrorMesssage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.LblErrorMesssage.Visible = false;
             // 
             // BtnLogin
             // 
@@ -131,6 +133,7 @@ namespace Presentation.Forms
             this.BtnLogin.Text = "Iniciar Sesión";
             this.BtnLogin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnLogin.UseVisualStyleBackColor = true;
+            this.BtnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // pictureBox1
             // 
@@ -152,13 +155,17 @@ namespace Presentation.Forms
             this.Controls.Add(this.LblErrorMesssage);
             this.Controls.Add(this.BtnLogin);
             this.Controls.Add(this.pictureBox1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormLogin";
-            this.Text = "FormLogin";
+            this.ShowIcon = false;
+            this.Text = "Inicia Sesión";
+            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

@@ -134,11 +134,11 @@ create table sfe_users(
 )
 
 insert into sfe_users values
-('juan', 'password'),
-('gonzalo', 'password'),
-('marta', 'password'),
-('lisandro', 'password'),
-('anna', 'password')
+('juan', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'),
+('gonzalo', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'),
+('marta', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'),
+('lisandro', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8'),
+('anna', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8')
 
 if OBJECT_ID('sfe_login') is not NULL
     drop proc sfe_login
@@ -156,8 +156,12 @@ AS
         e.email,
         e.birthday,
         e.state,
-        e.position_code
+        e.position_code,
+        p.name AS position
     from sfe_users u
     INNER JOIN sfe_employees e ON u.username = e.username
+    INNER JOIN sfe_positions p ON e.position_code = p.code
     WHERE u.username = @username AND u.[password] = @password
 go
+
+exec sfe_login 'anna', 'password'

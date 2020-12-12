@@ -8,7 +8,7 @@ namespace DataAccess.Repositories
         private readonly string ConnectionString;
         public Repository()
         {
-            ConnectionString = ConfigurationManager.ConnectionStrings["Presentation.Properties.Settings.ConnectionSISCONT"].ToString();
+            ConnectionString = ConfigurationManager.ConnectionStrings["Presentation.Properties.Settings.ConnectionMyCompany"].ToString();
         }
 
         protected SqlConnection GetConnection()
